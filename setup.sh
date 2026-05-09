@@ -31,7 +31,7 @@ fi
 cd /root
 
 if [ ! -d "Humanoid-Manipulation" ]; then
-    git clone https://github.com/YOUR_REPO/Humanoid-Manipulation.git
+    git clone https://github.com/jinhac174/Humanoid-Manipulation
 fi
 
 cd Humanoid-Manipulation
