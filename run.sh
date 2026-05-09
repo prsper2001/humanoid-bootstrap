@@ -1,11 +1,19 @@
 #!/bin/bash
-
-export DISPLAY=:1
+set -e
 
 cd /root/Humanoid-Manipulation
+
+echo "================================="
+echo "Using Isaac Sim Python"
+echo "================================="
+
+/isaac-sim/python.sh --version
+
+echo "================================="
+echo "Starting training"
+echo "================================="
 
 /isaac-sim/python.sh scripts/train.py \
     task=reorient \
     num_envs=16 \
-    seed=42 \
-    checkpoint=/workspace/persistent/checkpoints/latest.pt
+    seed=42

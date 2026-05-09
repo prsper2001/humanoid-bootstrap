@@ -1,7 +1,16 @@
 #!/bin/bash
 
-mkdir -p /workspace/persistent/backups
+cd /root
 
-cp -r \
-/root/Humanoid-Manipulation/outputs \
-/workspace/persistent/backups/outputs_$(date +%Y%m%d_%H%M%S)
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+tar \
+  --exclude='Humanoid-Manipulation/venv' \
+  --exclude='Humanoid-Manipulation/logs' \
+  --exclude='Humanoid-Manipulation/__pycache__' \
+  -czf humanoid_manipulation_backup_${TIMESTAMP}.tar.gz \
+  Humanoid-Manipulation/
+
+mkdir -p humanoid-bootstrap/backup
+
+mv humanoid_manipulation_backup_${TIMESTAMP}.tar.gz humanoid-bootstrap/backup/

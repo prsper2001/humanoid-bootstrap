@@ -3,9 +3,9 @@ set -e
 
 echo "===== START SETUP ====="
 
-# -----------------------------
+# =========================================================
 # 1. apt packages
-# -----------------------------
+# =========================================================
 apt-get update
 
 apt-get install -y \
@@ -15,40 +15,71 @@ apt-get install -y \
     xvfb \
     python3-pip
 
-# -----------------------------
-# 2. virtual display
-# -----------------------------
-export DISPLAY=:1
-
-if ! pgrep Xvfb > /dev/null; then
-    Xvfb :1 -screen 0 1280x720x24 &
-    sleep 2
-fi
-
-# -----------------------------
-# 3. clone humanoid repo
-# -----------------------------
+# =========================================================
+# 2. clone Humanoid-Manipulation
+# =========================================================
 cd /root
 
 if [ ! -d "Humanoid-Manipulation" ]; then
-    git clone https://github.com/jinhac174/Humanoid-Manipulation
+    git clone https://github.com/jinhac174/Humanoid-Manipulation.git
 fi
 
-cd Humanoid-Manipulation
+# =========================================================
+# 3. clone IsaacLab
+# =========================================================
+cd /root
 
-# -----------------------------
-# 4. python packages
-# -----------------------------
-pip install --upgrade pip
+if [ ! -d "IsaacLab" ]; then
+    git clone https://github.com/isaac-sim/IsaacLab.git
+fi
 
-pip install \
+# =========================================================
+# 4. install Python packages INTO Isaac Sim Python
+# =========================================================
+echo "===== INSTALLING PYTHON PACKAGES ====="
+
+/isaac-sim/python.sh -m pip install --upgrade pip
+
+/isaac-sim/python.sh -m pip install \
     numpy \
     torch \
     torchvision \
     matplotlib \
     trimesh \
     h5py \
-    gymnasium
+    gymnasium \
+    wandb \
+    hydra-core \
+    tensorboard \
+    moviepy \
+    imageio
+
+# =========================================================
+# 5. install IsaacLab
+# =========================================================
+cd /root/IsaacLab
+
+echo "===== INSTALLING ISAACLAB ====="
+
+./isaaclab.sh --install
+
+# editable installs
+/isaac-sim/python.sh -m pip install -e source/isaaclab
+/isaac-sim/python.sh -m pip install -e source/isaaclab_tasks
+
+# =========================================================
+# 6. install humanoid repo requirements
+# =========================================================
+cd /root/Humanoid-Manipulation
+
+if [ -f requirements.txt ]; then
+    /isaac-sim/python.sh -m pip install -r requirements.txt
+fi
+
+echo "===== VERIFYING INSTALL ====="
+
+/isaac-sim/python.sh -c "import isaacsim; print('IsaacSim OK')"
+/isaac-sim/python.sh -c "import isaaclab; print('IsaacLab OK')"
+/isaac-sim/python.sh -c "import wandb; print('wandb OK')"
 
 echo "===== SETUP COMPLETE ====="
-
