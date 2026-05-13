@@ -20,8 +20,8 @@ apt-get install -y \
 # =========================================================
 cd /root
 
-if [ ! -d "Humanoid-Manipulation" ]; then
-    git clone https://github.com/jinhac174/Humanoid-Manipulation.git
+if [ ! -d "humanoid-rl" ]; then
+    git clone https://github.com/jinhac174/humanoid-rl.git
 fi
 
 # =========================================================
@@ -70,7 +70,7 @@ echo "===== INSTALLING ISAACLAB ====="
 # =========================================================
 # 6. install humanoid repo requirements
 # =========================================================
-cd /root/Humanoid-Manipulation
+cd /root/humanoid-rl
 
 if [ -f requirements.txt ]; then
     /isaac-sim/python.sh -m pip install -r requirements.txt
