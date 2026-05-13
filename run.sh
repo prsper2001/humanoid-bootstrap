@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-cd /root/Humanoid-Manipulation
+cd /root/humanoid-rl
 
 echo "================================="
 echo "Using Isaac Sim Python"
